@@ -1,4 +1,8 @@
 {
+  "name": "1001-tracklists-scraper",
+  "version": "1.0.0",
+  "description": "Scrapes tracklists & track data from 1001tracklists.com",
+  "author": "Conrad Scherb",
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/cheerio": "^0.22.30",
