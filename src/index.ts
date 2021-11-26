@@ -1,18 +1,22 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
-import { Track } from './track';
+import { Track } from './interfaces/Track';
+import { TrackList } from './interfaces/TrackList';
 
 const baseURL = "https://www.1001tracklists.com/"
 
 const AxiosInstance = axios.create();
 
-export async function getTracklist(url: string): Promise<Track[]> {
-    const response = await AxiosInstance.get(baseURL + "tracklist/" + url);
+export async function getTracklist(url: string): Promise<TrackList> {
+    const tracklistURL = baseURL + "tracklist/" + url;
+    const response = await AxiosInstance.get(tracklistURL);
     const html = response.data;
     const pageHTML = cheerio.load(html);
     const tracksTable = pageHTML('.tlpTog');
+    const tracklistData = pageHTML('#pageTitle')
+    const tracklistName = tracklistData.text();
 
-    const tracksList: Track[] = [];
+    const tracks: Track[] = [];
 
     tracksTable.each((i, el) => {
         const artworkURL = pageHTML(el).find(".artwork").attr("data-src");       
@@ -42,10 +46,16 @@ export async function getTracklist(url: string): Promise<Track[]> {
             nextURL: nextURL
         }
         
-        tracksList.push(newTrack);
+        tracks.push(newTrack);
     })
 
-    return tracksList;
+    const trackList: TrackList = {
+        tracks: tracks,
+        name: tracklistName,
+        url: tracklistURL
+    };
+
+    return trackList;
 }
 
 getTracklist("h4gcxq1/k-motionz-ukf-on-air-hyper-vision-2020-07-03.html").then((tracks) => {
