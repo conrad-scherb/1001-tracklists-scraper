@@ -26,12 +26,12 @@ export async function getTrack(url: string): Promise<Track | undefined> {
 
     setsTable.each((_i, el) => {
         const setName = pageHTML(el).find(".bTitle").text().substring(1).slice(0, -1);
-        let setLink = pageHTML(el).find("a")?.attr("href")?.replace("/tracklist/", "")
+        let setLink = pageHTML(el).find("a")?.attr("href")?.substring(1);
         setLink = setLink?.substr(0, setLink?.lastIndexOf("#"));
         
         const set: DJSet = { 
             name: setName,
-            url: setLink
+            url: baseURL + setLink
         }
 
         sets.push(set);

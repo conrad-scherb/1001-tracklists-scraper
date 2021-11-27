@@ -32,17 +32,17 @@ export async function getTracklist(url: string): Promise<TrackList | undefined> 
         const trackHTML = pageHTML(el).find("*[itemprop = 'tracks']");
 
         const fullTrackName = trackHTML.find('*[itemprop = "name"]').attr('content') ?? "ID - ID";
-        const url = trackHTML.find('*[itemprop = "url"]').attr('content');
+        const url = trackHTML.find('*[itemprop = "url"]').attr('content')?.substring(1);
 
         const artist = fullTrackName.substr(0, fullTrackName.lastIndexOf("-")-1);
         const trackName = fullTrackName.substr(fullTrackName.lastIndexOf("-")+2);
 
         const prevURL = (i != 0) 
-            ? pageHTML(tracksTable[i-1]).find('*[itemprop = "url"]').attr('content')
+            ? pageHTML(tracksTable[i-1]).find('*[itemprop = "url"]').attr('content')?.substring(1)
             : undefined;
 
         const nextURL = (i != tracksTable.length-1) 
-            ? pageHTML(tracksTable[i+1]).find('*[itemprop = "url"]').attr('content')
+            ? pageHTML(tracksTable[i+1]).find('*[itemprop = "url"]').attr('content')?.substring(1)
             : undefined;
         
         const newTrack: TrackInTracklist = {
@@ -50,9 +50,9 @@ export async function getTracklist(url: string): Promise<TrackList | undefined> 
             artist: artist,
             trackName: trackName,
             albumArt: artworkURL,
-            url: url,
-            prevURL: prevURL,
-            nextURL: nextURL
+            url: (url != undefined ) ? baseURL + url : undefined,
+            prevURL: (prevURL != undefined ) ? baseURL + prevURL : undefined,
+            nextURL: (nextURL != undefined ) ? baseURL + nextURL : undefined
         }
         
         tracks.push(newTrack);
