@@ -1,5 +1,6 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import cheerio from "cheerio";
+import Log from "@frasermcc/log"
 import { Track } from "../interfaces/Track";
 import { TrackList } from "../interfaces/TrackList";
 
@@ -8,11 +9,20 @@ export async function getTracklist(url: string): Promise<TrackList> {
     const AxiosInstance = axios.create();
     const tracklistURL = baseURL + "tracklist/" + url;
 
-    const response = await AxiosInstance.get(tracklistURL);
-    const html = response.data;
+    const response = await AxiosInstance.get(tracklistURL).catch(error => {
+        if (error.response) {
+            Log.warn(`The tracklist was not found (error code ${error.response.status})`);
+        }
+    });
+
+    if (response === undefined) {
+        return undefined;
+    }
+
+    const html = (response as AxiosResponse).data;
     const pageHTML = cheerio.load(html);
     const tracksTable = pageHTML('.tlpTog');
-    const tracklistData = pageHTML('#pageTitle')
+    const tracklistData = pageHTML('#pageTitle');
     const tracklistName = tracklistData.text();
 
     const tracks: Track[] = [];
