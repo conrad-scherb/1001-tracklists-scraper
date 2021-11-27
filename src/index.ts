@@ -9,4 +9,4 @@ import { getTrack } from "./scraping/getTrack";
 import { searchTracklists } from './scraping/searchTracklists';
 import { searchTracks } from './scraping/searchTrack';
 
-export { TrackInTracklist, TrackList, DJSet, Track, TracklistSearchResult, TrackSearchResult, getTracklist, getTrack, searchTracklists, searchTracks };
+export { TrackInTracklist, TrackList, DJSet, Track, TracklistSearchResult, TrackSearchResult, getTrack, getTracklist, searchTracklists, searchTracks };
