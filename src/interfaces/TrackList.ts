@@ -1,7 +1,7 @@
-import { Track } from "./Track";
+import { TrackInTracklist } from './TrackInTracklist';
 
 export interface TrackList {
-    tracks: Track[];
+    tracks: TrackInTracklist[];
     name: string;
     url: string;
 }

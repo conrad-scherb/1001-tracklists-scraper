@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import cheerio from "cheerio";
 import Log from "@frasermcc/log"
-import { Track } from "../interfaces/Track";
+import { TrackInTracklist } from "../interfaces/TrackInTracklist";
 import { TrackList } from "../interfaces/TrackList";
 
 export async function getTracklist(url: string): Promise<TrackList> {
@@ -25,7 +25,7 @@ export async function getTracklist(url: string): Promise<TrackList> {
     const tracklistData = pageHTML('#pageTitle');
     const tracklistName = tracklistData.text();
 
-    const tracks: Track[] = [];
+    const tracks: TrackInTracklist[] = [];
 
     tracksTable.each((i, el) => {
         const artworkURL = pageHTML(el).find(".artwork").attr("data-src");       
@@ -45,7 +45,7 @@ export async function getTracklist(url: string): Promise<TrackList> {
             ? pageHTML(tracksTable[i+1]).find('*[itemprop = "url"]').attr('content')
             : undefined;
         
-        const newTrack: Track = {
+        const newTrack: TrackInTracklist = {
             fullTrackName: fullTrackName,
             artist: artist,
             trackName: trackName,
