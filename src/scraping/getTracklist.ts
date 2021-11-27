@@ -4,7 +4,7 @@ import Log from "@frasermcc/log"
 import { TrackInTracklist } from "../interfaces/TrackInTracklist";
 import { TrackList } from "../interfaces/TrackList";
 
-export async function getTracklist(url: string): Promise<TrackList> {
+export async function getTracklist(url: string): Promise<TrackList | undefined> {
     const baseURL = "https://www.1001tracklists.com/"
     const AxiosInstance = axios.create();
     const tracklistURL = baseURL + "tracklist/" + url;

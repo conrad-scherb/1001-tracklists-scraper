@@ -5,6 +5,7 @@
       "rootDir": "src",
       "outDir": "dist",
       "sourceMap": true,
+      "strict": true,
       "resolveJsonModule": true,
       "lib": ["es6", "dom"],
       "esModuleInterop": true
