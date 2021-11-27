@@ -14,18 +14,18 @@ export async function searchTracklists(query: string): Promise<TracklistSearchRe
         return undefined;
     }
 
-    let tracks: TracklistSearchResult[] = [];
+    let tracklistResults: TracklistSearchResult[] = [];
 
     for (let result of response.data.data) {
         const tracklistName = result.properties.tracklistname
         const tracklistURL =  "https://www.1001tracklists.com/tracklist/" + result.properties.id_unique + "/" + result.properties.url_name.replaceAll(" ", "-") + ".html"
-        const track: TracklistSearchResult = {
+        const tracklist: TracklistSearchResult = {
             name: tracklistName,
             url: tracklistURL
         }
 
-        tracks.push(track);
+        tracklistResults.push(tracklist);
     }
 
-    return tracks
+    return tracklistResults
 }
