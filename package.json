@@ -1,10 +1,10 @@
 {
   "name": "1001-tracklists-scraper",
-  "version": "1.0.5",
+  "version": "1.0.9",
   "description": "Scrapes tracklists & track data from 1001tracklists.com",
   "author": "Conrad Scherb",
   "types": "./dist/index.d.ts",
-  "entry": "./dist/index.js",
+  "main": "./dist/index.js",
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/cheerio": "^0.22.30",
@@ -12,7 +12,7 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "@frasermcc/log": "^2.0.2",
+    "@frasermcc/log": "^2.1.2",
     "1001-tracklists-scraper": "^1.0.0",
     "axios": "^0.24.0",
     "cheerio": "^1.0.0-rc.10",

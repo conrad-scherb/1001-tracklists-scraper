@@ -2,7 +2,7 @@ import axios from "axios";
 import { TrackSearchResult } from "../interfaces/TrackSearchResult";
 
 export async function searchTracks(query: string, num = 9999): Promise<TrackSearchResult[] | undefined> {
-    const baseURL = "htttps://www.1001tracklists.com/ajax/search_track.php?p="
+    const baseURL = "https://www.1001tracklists.com/ajax/search_track.php?p="
     const urlSuffix = "&noIDFieldCheck=true&fixedMode=true&sf=p"
     const url = baseURL + query + urlSuffix;
     const AxiosInstance = axios.create();
@@ -21,7 +21,6 @@ export async function searchTracks(query: string, num = 9999): Promise<TrackSear
         const name = results[i].properties.trackname;
         const url = "https://www.1001tracklists.com/track/" + results[i].properties.id_unique + "/" + results[i].properties.shorttrackname.replaceAll(" ", "-") + ".html"
 
-        console.log(results[i].properties);
         const track: TrackSearchResult = {
             trackName: name,
             artist: artist,

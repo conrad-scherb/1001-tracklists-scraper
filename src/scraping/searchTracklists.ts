@@ -2,7 +2,7 @@ import axios from "axios";
 import { TracklistSearchResult } from "../interfaces/TracklistSearchResult";
 
 export async function searchTracklists(query: string): Promise<TracklistSearchResult[] | undefined> {
-    const baseURL = "htttps://www.1001tracklists.com/ajax/search_tracklist.php?p="
+    const baseURL = "https://www.1001tracklists.com/ajax/search_tracklist.php?p="
     const urlSuffix = "&noIDFieldCheck=true&fixedMode=true&sf=p"
     const url = baseURL + query + urlSuffix;
     const AxiosInstance = axios.create();
