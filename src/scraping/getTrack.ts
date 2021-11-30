@@ -5,10 +5,20 @@ import { DJSet } from "../interfaces/DJSet";
 import { Track } from "../interfaces/Track";
 
 export async function getTrack(url: string): Promise<Track | undefined> {
-    const baseURL = "https://www.1001tracklists.com/"
+    if (!url.startsWith("https://www.1001tracklists.com/track/")) {
+        url = "https://www.1001tracklists.com/track/" + url;
+    }
+
     const AxiosInstance = axios.create();
-    const trackURL = baseURL + "track/" + url;
-    const response: AxiosResponse = await AxiosInstance.get(trackURL);
+    const response = await AxiosInstance.get(url).catch(error => {
+        if (error.response) {
+            Log.warn(`The track was not found (error code ${error.response.status})`);
+        }
+    });
+
+    if (response === undefined) {
+        return undefined;
+    }
 
     const html = (response as AxiosResponse).data;
     const pageHTML = cheerio.load(html);
@@ -31,7 +41,7 @@ export async function getTrack(url: string): Promise<Track | undefined> {
         
         const set: DJSet = { 
             name: setName,
-            url: baseURL + setLink
+            url: "https://www.1001tracklists.com/" + setLink
         }
 
         sets.push(set);
@@ -39,7 +49,7 @@ export async function getTrack(url: string): Promise<Track | undefined> {
 
     const track: Track = {
         title: trackName,
-        url: trackURL,
+        url: url,
         artist: trackArtist,
         appearances: sets
     };

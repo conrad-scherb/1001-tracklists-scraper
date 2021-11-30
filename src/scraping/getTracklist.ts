@@ -5,11 +5,12 @@ import { TrackInTracklist } from "../interfaces/TrackInTracklist";
 import { TrackList } from "../interfaces/TrackList";
 
 export async function getTracklist(url: string): Promise<TrackList | undefined> {
-    const baseURL = "https://www.1001tracklists.com/"
-    const AxiosInstance = axios.create();
-    const tracklistURL = baseURL + "tracklist/" + url;
+    if (!url.startsWith("https://www.1001tracklists.com/tracklist/")) {
+        url = "https://www.1001tracklists.com/tracklist/" + url;
+    }
 
-    const response = await AxiosInstance.get(tracklistURL).catch(error => {
+    const AxiosInstance = axios.create();
+    const response = await AxiosInstance.get(url).catch(error => {
         if (error.response) {
             Log.warn(`The tracklist was not found (error code ${error.response.status})`);
         }
@@ -50,9 +51,9 @@ export async function getTracklist(url: string): Promise<TrackList | undefined> 
             artist: artist,
             trackName: trackName,
             albumArt: artworkURL,
-            url: (url != undefined ) ? baseURL + url : undefined,
-            prevURL: (prevURL != undefined ) ? baseURL + prevURL : undefined,
-            nextURL: (nextURL != undefined ) ? baseURL + nextURL : undefined
+            url: (url != undefined ) ? "https://www.1001tracklists.com/" + url : undefined,
+            prevURL: (prevURL != undefined ) ? "https://www.1001tracklists.com/" + prevURL : undefined,
+            nextURL: (nextURL != undefined ) ? "https://www.1001tracklists.com/" + nextURL : undefined
         }
         
         tracks.push(newTrack);
@@ -61,7 +62,7 @@ export async function getTracklist(url: string): Promise<TrackList | undefined> 
     const trackList: TrackList = {
         tracks: tracks,
         name: tracklistName,
-        url: tracklistURL
+        url: url
     };
 
     return trackList;
