@@ -8,5 +8,6 @@ import { getTracklist } from './scraping/getTracklist';
 import { getTrack } from "./scraping/getTrack";
 import { searchTracklists } from './scraping/searchTracklists';
 import { searchTracks } from './scraping/searchTrack';
+import { findAdjacentTracks } from './scraping/findAdjacentTracks';
 
-export { TrackInTracklist, TrackList, DJSet, Track, TracklistSearchResult, TrackSearchResult, getTrack, getTracklist, searchTracklists, searchTracks };
+export { TrackInTracklist, TrackList, DJSet, Track, TracklistSearchResult, TrackSearchResult, getTrack, getTracklist, searchTracklists, searchTracks, findAdjacentTracks };

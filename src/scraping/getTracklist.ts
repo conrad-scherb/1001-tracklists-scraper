@@ -52,6 +52,7 @@ export async function getTracklist(url: string): Promise<TrackList | undefined> 
             trackName: trackName,
             albumArt: artworkURL,
             url: (url != undefined ) ? "https://www.1001tracklists.com/" + url : undefined,
+            id: (url != undefined ) ? url.substr(6, 8) : undefined,
             prevURL: (prevURL != undefined ) ? "https://www.1001tracklists.com/" + prevURL : undefined,
             nextURL: (nextURL != undefined ) ? "https://www.1001tracklists.com/" + nextURL : undefined
         }
