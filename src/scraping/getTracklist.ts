@@ -3,13 +3,22 @@ import cheerio from "cheerio";
 import Log from "@frasermcc/log"
 import { TrackInTracklist } from "../interfaces/TrackInTracklist";
 import { TrackList } from "../interfaces/TrackList";
+import { SocksProxyAgent } from "socks-proxy-agent";
 
-export async function getTracklist(url: string): Promise<TrackList | undefined> {
+export async function getTracklist(url: string, proxy: string | null): Promise<TrackList | undefined> {
     if (!url.startsWith("https://www.1001tracklists.com/tracklist/")) {
         url = "https://www.1001tracklists.com/tracklist/" + url;
     }
 
     const AxiosInstance = axios.create();
+
+    if (proxy) {
+        Log.info("Using proxy " + proxy);
+        const proxyServer = `socks5://${proxy}`;
+        const agent = new SocksProxyAgent(proxyServer);
+        AxiosInstance.defaults.httpAgent = agent;
+    }
+    
     const response = await AxiosInstance.get(url).catch(error => {
         if (error.response) {
             Log.warn(`The tracklist was not found (error code ${error.response.status})`);
