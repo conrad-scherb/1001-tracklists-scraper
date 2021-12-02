@@ -5,4 +5,5 @@ export interface Track {
     artist: string | null;
     url: string;
     appearances: DJSet[];
+    artwork: string | null;
 }

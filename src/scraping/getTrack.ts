@@ -13,7 +13,7 @@ export async function getTrack(url: string, proxy: string | null = null): Promis
     const AxiosInstance = axios.create();
 
     if (proxy) {
-        Log.info("Using proxy " + proxy);
+        Log.info(`Getting track for ${url} using proxy ` + proxy);
         const proxyServer = `socks5://${proxy}`;
         const agent = new SocksProxyAgent(proxyServer);
         AxiosInstance.defaults.httpAgent = agent;
@@ -33,6 +33,11 @@ export async function getTrack(url: string, proxy: string | null = null): Promis
     const pageHTML = cheerio.load(html);
     const setsTable = pageHTML('.bItm');
     const trackData = pageHTML('#pageTitle');
+    const pageCss = pageHTML('style').html();
+    const outerMatches = /(?<=@media\(min-width: 800px\) { #artworkLeft)(.*?)(?=;} })/.exec(pageCss as string)
+    const urlMatches = /(?<=url\(')(.*?)(?='\))/.exec(outerMatches?.[0] as string)
+    const artworkURL = urlMatches?.[0] as string;
+
     const trackArtist = trackData.find("a").html();
     const trackName = trackData.find(".spR").html();
 
@@ -60,7 +65,8 @@ export async function getTrack(url: string, proxy: string | null = null): Promis
         title: trackName,
         url: url,
         artist: trackArtist,
-        appearances: sets
+        appearances: sets,
+        artwork: artworkURL
     };
 
     return track;

@@ -5,7 +5,7 @@ import { TrackInTracklist } from "../interfaces/TrackInTracklist";
 import { TrackList } from "../interfaces/TrackList";
 import { SocksProxyAgent } from "socks-proxy-agent";
 
-export async function getTracklist(url: string, proxy: string | null): Promise<TrackList | undefined> {
+export async function getTracklist(url: string, proxy: string | null = null): Promise<TrackList | undefined> {
     if (!url.startsWith("https://www.1001tracklists.com/tracklist/")) {
         url = "https://www.1001tracklists.com/tracklist/" + url;
     }
@@ -13,7 +13,7 @@ export async function getTracklist(url: string, proxy: string | null): Promise<T
     const AxiosInstance = axios.create();
 
     if (proxy) {
-        Log.info("Using proxy " + proxy);
+        Log.info(`Getting tracklist for ${url} using proxy ` + proxy);
         const proxyServer = `socks5://${proxy}`;
         const agent = new SocksProxyAgent(proxyServer);
         AxiosInstance.defaults.httpAgent = agent;

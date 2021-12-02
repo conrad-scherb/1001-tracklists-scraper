@@ -12,7 +12,7 @@ export async function findAdjacentTracks(tracklistURL: string, trackID: string, 
     const AxiosInstance = axios.create();
 
     if (proxy) {
-        Log.info("Using proxy " + proxy);
+        Log.info(`Getting adjacent tracks to ${trackID} in ${tracklistURL} using proxy ` + proxy);
         const proxyServer = `socks5://${proxy}`;
         const agent = new SocksProxyAgent(proxyServer);
         AxiosInstance.defaults.httpAgent = agent;

@@ -1,6 +1,6 @@
 {
   "name": "1001-tracklists-scraper",
-  "version": "1.0.13",
+  "version": "1.1.0",
   "description": "Scrapes tracklists & track data from 1001tracklists.com",
   "author": "Conrad Scherb",
   "types": "./dist/index.d.ts",
