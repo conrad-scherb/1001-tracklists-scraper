@@ -1,7 +1,6 @@
-import Log from "@frasermcc/log";
-import axios, { AxiosResponse } from "axios";
 import cheerio from "cheerio";
-import { SocksProxyAgent } from "socks-proxy-agent";
+import { promisify } from 'util';
+const exec = promisify(require('child_process').exec)
 
 // Takes a tracklist URL and a track ID, then returns the track IDs of the adjacent tracks.
 export async function findAdjacentTracks(tracklistURL: string, trackID: string, proxy: string | null = null): Promise<string[] | undefined> {
@@ -9,26 +8,13 @@ export async function findAdjacentTracks(tracklistURL: string, trackID: string, 
         tracklistURL = "https://www.1001tracklists.com/tracklist/" + tracklistURL;
     }
 
-    const AxiosInstance = axios.create();
-
+    let cmd = 'curl';
     if (proxy) {
-        Log.info(`Getting adjacent tracks to ${trackID} in ${tracklistURL} using proxy ` + proxy);
-        const proxyServer = `socks5://${proxy}`;
-        const agent = new SocksProxyAgent(proxyServer);
-        AxiosInstance.defaults.httpAgent = agent;
+        cmd += ` -x socks5://${proxy}`
     }
 
-    const response = await AxiosInstance.get(tracklistURL).catch(error => {
-        if (error.response) {
-            Log.warn(`The tracklist was not found (error code ${error.response.status})`);
-        }
-    });
+    const html = (await exec(`${cmd} -X GET -L "${tracklistURL}"`)).stdout
 
-    if (response === undefined) {
-        return undefined;
-    }
-
-    const html = (response as AxiosResponse).data;
     const pageHTML = cheerio.load(html);
 
     const tracksTable = pageHTML("#tlTab")

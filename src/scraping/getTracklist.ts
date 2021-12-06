@@ -1,35 +1,20 @@
-import axios, { AxiosResponse } from "axios";
 import cheerio from "cheerio";
-import Log from "@frasermcc/log"
 import { TrackInTracklist } from "../interfaces/TrackInTracklist";
 import { TrackList } from "../interfaces/TrackList";
-import { SocksProxyAgent } from "socks-proxy-agent";
+import { promisify } from 'util';
+const exec = promisify(require('child_process').exec)
 
 export async function getTracklist(url: string, proxy: string | null = null): Promise<TrackList | undefined> {
     if (!url.startsWith("https://www.1001tracklists.com/tracklist/")) {
         url = "https://www.1001tracklists.com/tracklist/" + url;
     }
 
-    const AxiosInstance = axios.create();
-
+    let cmd = 'curl';
     if (proxy) {
-        Log.info(`Getting tracklist for ${url} using proxy ` + proxy);
-        const proxyServer = `socks5://${proxy}`;
-        const agent = new SocksProxyAgent(proxyServer);
-        AxiosInstance.defaults.httpAgent = agent;
-    }
-    
-    const response = await AxiosInstance.get(url).catch(error => {
-        if (error.response) {
-            Log.warn(`The tracklist was not found (error code ${error.response.status})`);
-        }
-    });
-
-    if (response === undefined) {
-        return undefined;
+        cmd += ` -x socks5://${proxy}`
     }
 
-    const html = (response as AxiosResponse).data;
+    const html = (await exec(`${cmd} -X GET -L "${url}"`)).stdout
     const pageHTML = cheerio.load(html);
     const tracksTable = pageHTML('.tlpTog');
     const tracklistData = pageHTML('#pageTitle');
