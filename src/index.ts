@@ -10,4 +10,6 @@ import { searchTracklists } from './scraping/searchTracklists';
 import { searchTracks } from './scraping/searchTrack';
 import { findAdjacentTracks } from './scraping/findAdjacentTracks';
 
+//getTrack("26hk1lup", "54.37.137.53:5001").then(console.log);
+
 export { TrackInTracklist, TrackList, DJSet, Track, TracklistSearchResult, TrackSearchResult, getTrack, getTracklist, searchTracklists, searchTracks, findAdjacentTracks };
